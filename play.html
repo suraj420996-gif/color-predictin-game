@@ -1,0 +1,60 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gameplay</title>
+  <link rel="stylesheet" href="{% static 'play.css' %}">
+</head>
+<body>
+  <div class="main">
+  <h2>Welcome {{ request.user.username }}</h2>
+  <p>Wallet Balance: ₹{{ wallet.balance }}</p>
+
+<!-- Add Balance Form -->
+<h3>Add Balance</h3>
+<form method="post">
+  {% csrf_token %}
+  <input type="number" step="0.01" name="add_amount" placeholder="Enter Add amount">
+  <button type="submit" name="action" value="add">Add</button>
+</form>
+
+<!-- Withdraw Form -->
+<h3>Withdraw</h3>
+<form method="post">
+  {% csrf_token %}
+  <input type="number" step="0.01" name="withdraw_amount" placeholder="Enter withdraw amount">
+  <button type="submit" name="action" value="withdraw">Withdraw</button>
+</form>
+
+<!-- Color Betting Form -->
+<h3>Place Bet</h3>
+<form method="post">
+  {% csrf_token %}
+  <label class="label">Choose Color:</label>
+  <select name="color">
+    <option value="red">Red</option>
+    <option value="green">Green</option>
+    <option value="violet">Violet</option>
+  </select>
+  <input type="number" step="0.01" name="bet_amount" placeholder="Enter bet amount">
+  <button type="submit" name="action" value="bet">Place Bet</button>
+</form>
+
+     <!-- Result -->
+      {% if winning_color %}
+             <h3>Result: {{ winning_color|title }}</h3>
+            {% if win %}
+              <p style="color:green;">🎉 You Win!</p>
+              {% else %}
+               <p style="color:red;">❌ You Lost!</p>
+          {% endif %}
+      {% endif %}
+
+    <!-- Messages -->
+      {% if error %}<p style="color:red;">{{ error }}</p>{% endif %}
+      {% if success %}<p style="color:green;">{{ success }}</p>{% endif %}
+</div>
+</body>
+</html>
